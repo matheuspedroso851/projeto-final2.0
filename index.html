@@ -5,19 +5,99 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jogos de Descarte Consciente</title>
 <style>
-body { font-family:"Comic Sans MS",Arial,sans-serif; text-align:center; background: linear-gradient(to bottom,#b2fefa,#0ed2f7); color:#333; margin:0; padding:0; }
-header { background:#0077b6; padding:20px; color:white; font-size:24px; font-weight:bold; }
-h1 { color:#0077b6; margin-top:20px; font-size:32px; }
-button { padding:12px 25px; margin:10px; font-size:18px; cursor:pointer; border-radius:12px; border:none; background:#00b4d8; color:white; transition:0.3s; }
-button:hover { background:#0077b6; }
+body { 
+    font-family:"Comic Sans MS",Arial,sans-serif; 
+    text-align:center; 
+    background: linear-gradient(rgba(255,255,255,0.2), rgba(255,255,255,0.2)), url('sua-imagem.jpg'); 
+    background-repeat: no-repeat;
+    background-size: cover;         
+    background-position: center;    
+    color:#023E8A;
+    margin:0; 
+    padding:0; 
+}
+header { 
+    background: rgba(0,121,107,0.85); 
+    padding:20px; 
+    color:white; 
+    font-size:24px; 
+    font-weight:bold; 
+    border-bottom-left-radius:10px;
+    border-bottom-right-radius:10px;
+}
+h1, h2 { color:#023E8A; margin-top:20px; }
+h1 { font-size:32px; }
+h2 { font-size:28px; }
+button { 
+    padding:12px 25px; margin:10px; font-size:18px; cursor:pointer; 
+    border-radius:12px; border:none; background: #4CAF50; color:white; transition:0.3s; 
+}
+button:hover { background: #388E3C; }
 #menu button { display:block; margin:20px auto; width:60%; }
-#login { max-width:400px; margin:50px auto; padding:20px; background:#caf0f8; border-radius:15px; box-shadow:0 4px 10px rgba(0,0,0,0.1);}
-input { padding:12px; font-size:16px; border-radius:10px; border:2px solid #0077b6; margin-bottom:15px; width:90%; }
-.quiz-question, .cart { margin:15px; font-weight:bold; color:#023e8a; }
-.cart { display:inline-block; width:100px; height:60px; line-height:60px; margin:10px; cursor:pointer; font-size:18px; border-radius:10px; text-align:center; background:#a8dadc; }
-#itens-corrida { position:relative; height:250px; background:#a8dadc; border-radius:10px; overflow:hidden; margin-top:20px; }
-.correct { background:#4caf50 !important; }
-.wrong { background:#e63946 !important; }
+#login, #quiz, #memoria, #corrida, #ranking { 
+    max-width:500px; margin:20px auto; padding:20px; 
+    background: rgba(202,240,248,0.85); border-radius:15px; 
+    box-shadow:0 4px 10px rgba(0,0,0,0.3); color:#023E8A; 
+}
+input { padding:12px; font-size:16px; border-radius:10px; border:2px solid #00796B; margin-bottom:15px; width:90%; }
+
+/* Quiz */
+.quiz-question { background: rgba(168,218,220,0.85); color:#023E8A; padding:15px; margin:15px 0; border-radius:12px; font-weight:bold; box-shadow:0 4px 8px rgba(0,0,0,0.2); }
+.quiz-option { background:#4CAF50; color:white; padding:10px 15px; margin:8px 0; border-radius:10px; cursor:pointer; display:block; text-align:center; transition:0.3s; }
+.quiz-option:hover { background:#388E3C; }
+
+/* Memória */
+.cart { display:inline-block; width:100px; height:100px; line-height:100px; margin:10px; cursor:pointer; font-size:18px; border-radius:12px; text-align:center; background: rgba(168,218,220,0.85); color:#023E8A; transition:0.3s; box-shadow:0 4px 6px rgba(0,0,0,0.2); }
+.cart.correct { background:green; color:white; }
+.cart.wrong { background:red; color:white; }
+
+/* Corrida (palavras caindo) */
+#itens-corrida { 
+    position: relative; 
+    height: 300px; 
+    background: rgba(168,218,220,0.85); 
+    border-radius:10px; 
+    overflow: hidden; 
+    margin-top:20px; 
+    width:100%; 
+    max-width:500px; 
+    margin-left:auto; 
+    margin-right:auto;
+    border:2px solid #023E8A;
+}
+#itens-corrida .cart {
+    display:inline-block;
+    width:auto;
+    padding:5px 10px;
+    height:auto;
+    min-width:60px;
+    line-height:1.2;
+    font-size:16px;
+    margin:5px;
+    cursor:pointer;
+    border-radius:8px;
+    text-align:center;
+    background: rgba(168,218,220,0.95);
+    color:#023E8A;
+    box-shadow:0 2px 4px rgba(0,0,0,0.2);
+    position:absolute;
+}
+#pontuacao-corrida, #tempo-corrida, #erros-corrida { font-weight:bold; margin-top:15px; color:#023E8A; }
+
+/* Ranking */
+#ranking ul { list-style:none; padding:0; }
+#ranking li { 
+    margin:5px 0; 
+    font-weight:bold; 
+    padding:5px 10px; 
+    border-radius:8px; 
+    transition:0.5s;
+}
+#ranking li.top1 { background:#FFD700; color:#000; }   
+#ranking li.top2 { background:#C0C0C0; color:#000; }   
+#ranking li.top3 { background:#CD7F32; color:#fff; }   
+#ranking li.animate { transform: scale(1.1); animation: pulse 0.5s ease-in-out; }
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
 </style>
 </head>
 <body>
@@ -30,7 +110,7 @@ input { padding:12px; font-size:16px; border-radius:10px; border:2px solid #0077
   <input type="text" id="nome" placeholder="Digite seu nome">
   <input type="text" id="sobrenome" placeholder="Digite seu sobrenome">
   <button onclick="cadastrar()">Cadastrar / Jogar</button>
-  <p>Ou acessar outro projeto: <a href="https://matheuspedroso851.github.io/projeto-ambiental/" target="_blank">Clique aqui</a></p>
+  <p>Acesse nosso outro projeto: descarte consciente. <a href="" target="_blank">Clique aqui</a></p>
 </div>
 
 <!-- MENU -->
@@ -38,7 +118,7 @@ input { padding:12px; font-size:16px; border-radius:10px; border:2px solid #0077
   <h1>Escolha um jogo</h1>
   <button onclick="iniciarQuiz()">📝 Quiz</button>
   <button onclick="iniciarMemoria()">🃏 Jogo da Memória</button>
-  <button onclick="iniciarCorrida()">🏃‍♂️ Corrida do Resíduo</button>
+  <button onclick="iniciarCorrida()">🏃‍♂️ Corrida de Palavras</button>
 </div>
 
 <!-- QUIZ -->
@@ -55,12 +135,19 @@ input { padding:12px; font-size:16px; border-radius:10px; border:2px solid #0077
   <p id="pontuacao-memoria">Pontuação: 0</p>
 </div>
 
-<!-- CORRIDA -->
+<!-- CORRIDA DE PALAVRAS -->
 <div id="corrida" style="display:none;">
-  <h2>🏃‍♂️ Corrida do Resíduo</h2>
+  <h2>🏃‍♂️ Corrida de Palavras: Clique nas recicláveis!</h2>
   <div id="itens-corrida"></div>
   <p id="pontuacao-corrida">Pontuação: 0</p>
-  <p id="tempo-corrida">Tempo restante: 30s</p>
+  <p id="erros-corrida">Erros: 0</p>
+  <p id="tempo-corrida">Tempo restante: 60s</p>
+</div>
+
+<!-- RANKING -->
+<div id="ranking" style="display:none;">
+  <h2>🏆 Ranking dos Jogadores</h2>
+  <ul id="lista-ranking"></ul>
 </div>
 
 <script>
@@ -75,13 +162,36 @@ function cadastrar(){
   const existe = ranking.find(j => j.nome === nome && j.sobrenome === sobrenome);
   if(existe){ alert("Nome e sobrenome já cadastrados!"); return; }
 
-  jogadorAtual = { nome, sobrenome, total:0, quiz:false, memoria:false, corrida:false };
+  jogadorAtual = { nome, sobrenome, total:0, quiz:0, memoria:0, corrida:0 };
   ranking.push(jogadorAtual);
   localStorage.setItem('ranking', JSON.stringify(ranking));
   localStorage.setItem('jogadorAtual', JSON.stringify(jogadorAtual));
 
   document.getElementById('login').style.display='none';
   document.getElementById('menu').style.display='block';
+  mostrarRanking();
+}
+
+// ===== RANKING =====
+function mostrarRanking(){
+  let ranking = JSON.parse(localStorage.getItem('ranking')) || [];
+  const index = ranking.findIndex(j => j.nome === jogadorAtual.nome && j.sobrenome === jogadorAtual.sobrenome);
+  if(index >= 0) ranking[index] = jogadorAtual; else ranking.push(jogadorAtual);
+
+  ranking.sort((a,b) => b.total - a.total);
+  localStorage.setItem('ranking', JSON.stringify(ranking));
+
+  document.getElementById('ranking').style.display='block';
+  const lista = document.getElementById('lista-ranking');
+  lista.innerHTML='';
+  ranking.forEach((j, i)=>{
+    const li = document.createElement('li');
+    li.textContent = `${j.nome} ${j.sobrenome} - Total: ${j.total} (Quiz: ${j.quiz}, Memória: ${j.memoria}, Corrida: ${j.corrida})`;
+    if(i===0) li.classList.add('top1');
+    if(i===1) li.classList.add('top2');
+    if(i===2) li.classList.add('top3');
+    lista.appendChild(li);
+  });
 }
 
 // ===== MENU =====
@@ -92,145 +202,205 @@ function mostrar(jogo){
   document.getElementById(jogo).style.display='block';
 }
 
-// ===== FINALIZAR JOGO =====
-function finalizarJogo(){
-  let ranking = JSON.parse(localStorage.getItem('ranking')) || [];
-  const index = ranking.findIndex(j => j.nome === jogadorAtual.nome && j.sobrenome === jogadorAtual.sobrenome);
-  if(index>=0) ranking[index] = jogadorAtual; else ranking.push(jogadorAtual);
-  localStorage.setItem('ranking', JSON.stringify(ranking));
-  // redireciona para Google Forms
-  window.location.href="https://forms.gle/seuformulario";
-}
-
 // ===== QUIZ =====
-const perguntas = [
-  {pergunta:"Onde devemos jogar uma garrafa plástica?", opcoes:["No lixo comum","Na coleta seletiva","No rio"], resposta:1},
-  {pergunta:"O que acontece quando jogamos óleo na pia?", opcoes:["Ajuda","Polui","Nada"], resposta:1},
-  {pergunta:"Qual material demora mais para se decompor?", opcoes:["Papel","Vidro","Casca"], resposta:1},
-  {pergunta:"O que devemos fazer com pilhas usadas?", opcoes:["Jogar no lixo comum","Levar a um ponto de coleta","Queimar"], resposta:1},
-  {pergunta:"Qual dessas ações ajuda a economizar água?", opcoes:["Deixar a torneira aberta","Consertar vazamentos","Tomar banho longo"], resposta:1},
-  {pergunta:"O que significa reciclar?", opcoes:["Reutilizar materiais","Descartar no lixo","Queimar o lixo"], resposta:0},
-  {pergunta:"O vidro deve ser descartado em qual tipo de coleta?", opcoes:["Coleta comum","Coleta seletiva","Não se recicla"], resposta:1},
-  {pergunta:"O que podemos fazer com papel usado?", opcoes:["Reutilizar ou reciclar","Queimar","Descartar na rua"], resposta:0},
-  {pergunta:"Por que é importante separar o lixo?", opcoes:["Para reduzir poluição","Para enfeitar a casa","Para economizar dinheiro"], resposta:0},
-  {pergunta:"Qual desses não deve ir para o lixo orgânico?", opcoes:["Casca de fruta","Restos de comida","Plástico"], resposta:2},
+let quizPerguntas = [
+  {q:"O que pode ser reciclado?", op:["Lixo comum","Papel","Casca de fruta"], r:1},
+  {q:"Qual material NÃO é reciclável?", op:["Plástico","Vidro","Areia"], r:2},
+  {q:"Qual é o destino correto do vidro?", op:["Lixo comum","Reciclagem","Queimar"], r:1},
+  {q:"Qual destes metais é reciclável?", op:["Ferro","Areia","Madeira"], r:0},
+  {q:"O que fazer com pilhas usadas?", op:["Jogar no lixo","Levar para ponto de coleta","Enterrar"], r:1},
+  {q:"Plástico PET deve ir para?", op:["Lixo comum","Reciclagem","Compostagem"], r:1},
+  {q:"Vidros quebrados devem ser?", op:["Lixo comum","Reciclagem","Jogado na rua"], r:1},
+  {q:"O que é compostagem?", op:["Transformar orgânicos em adubo","Queimar resíduos","Enterrar lixo"], r:0},
+  {q:"Óleo de cozinha usado deve ser?", op:["Jogado na pia","Reciclado","Queimado"], r:1},
+  {q:"Qual destes NÃO é orgânico?", op:["Casca de banana","Plástico","Folha"], r:1},
+  {q:"Qual é o impacto do lixo no rio?", op:["Poluição","Purificação","Não afeta"], r:0},
+  {q:"O que é lixo eletrônico?", op:["Celulares e computadores","Restos de comida","Plástico"], r:0},
+  {q:"Reciclar papel ajuda a?", op:["Salvar árvores","Aumentar poluição","Nada"], r:0},
+  {q:"Como reduzir lixo?", op:["Reutilizar e reciclar","Jogar tudo fora","Queimar"], r:0},
+  {q:"Baterias devem ir para?", op:["Lixo comum","Ponto de coleta","Enterrado"], r:1},
+  {q:"Qual item é reciclável?", op:["Lata de alumínio","Pneu usado","Vidro quebrado"], r:0},
+  {q:"Resíduos orgânicos vão para?", op:["Compostagem","Reciclagem","Lixeira comum"], r:0},
+  {q:"O que é lixo orgânico?", op:["Restos de comida","Plástico","Vidro"], r:0},
+  {q:"O que não se deve jogar no lixo comum?", op:["Plástico reciclável","Restos de comida","Papel usado"], r:0},
+  {q:"Qual ação ajuda o meio ambiente?", op:["Reciclar","Queimar lixo","Jogar tudo no chão"], r:0},
 ];
-
-let perguntasEmbaralhadas = [];
-let pontuacaoQuiz = 0, perguntaAtual = 0;
-const quizContainer = document.getElementById('quiz-container');
+let pontuacaoQuiz = 0;
+let perguntaAtual = 0;
 
 function iniciarQuiz(){
-  if(jogadorAtual.quiz){ alert("Você já jogou o Quiz!"); return; }
-  perguntaAtual = 0; pontuacaoQuiz = 0;
-  perguntasEmbaralhadas = perguntas.sort(()=>0.5-Math.random());
-  mostrar('quiz'); mostrarPergunta();
+  mostrar('quiz');
+  pontuacaoQuiz = 0;
+  perguntaAtual = 0;
+  mostrarPergunta();
 }
 
 function mostrarPergunta(){
-  if(perguntaAtual >= perguntasEmbaralhadas.length){
-    jogadorAtual.total += pontuacaoQuiz;
-    jogadorAtual.quiz = true;
+  const container = document.getElementById('quiz-container');
+  container.innerHTML = '';
+
+  if(perguntaAtual >= quizPerguntas.length){
+    alert("Quiz finalizado! Pontuação: " + pontuacaoQuiz);
+    jogadorAtual.quiz = pontuacaoQuiz;
+    jogadorAtual.total = jogadorAtual.quiz + jogadorAtual.memoria + jogadorAtual.corrida;
     localStorage.setItem('jogadorAtual', JSON.stringify(jogadorAtual));
-    finalizarJogo();
+    mostrarRanking();
     return;
   }
-  quizContainer.innerHTML='';
-  let q = perguntasEmbaralhadas[perguntaAtual];
-  let div = document.createElement('div'); div.className='quiz-question'; div.textContent = q.pergunta;
-  quizContainer.appendChild(div);
-  q.opcoes.forEach((o,i)=>{
-    let btn = document.createElement('button'); btn.textContent=o;
-    btn.onclick = ()=>verificarResposta(i,btn);
-    quizContainer.appendChild(btn);
-  });
-}
 
-function verificarResposta(i,btn){
-  const correta = perguntasEmbaralhadas[perguntaAtual].resposta;
-  const botoes = quizContainer.querySelectorAll('button');
-  botoes.forEach(b=>b.disabled=true);
-  if(i===correta){ pontuacaoQuiz++; btn.classList.add('correct'); btn.textContent='✅ '+btn.textContent; }
-  else { btn.classList.add('wrong'); btn.textContent='❌ '+btn.textContent; botoes[correta].classList.add('correct'); botoes[correta].textContent='✅ '+botoes[correta].textContent; }
-  perguntaAtual++; setTimeout(mostrarPergunta,1000);
+  const p = quizPerguntas[perguntaAtual];
+  const divPergunta = document.createElement('div');
+  divPergunta.className = 'quiz-question';
+  divPergunta.textContent = p.q;
+  container.appendChild(divPergunta);
+
+  p.op.forEach((opcao, idx)=>{
+    const btn = document.createElement('div');
+    btn.className = 'quiz-option';
+    btn.textContent = opcao;
+    btn.onclick = ()=>{
+      if(idx === p.r){ btn.style.background='green'; pontuacaoQuiz++; } 
+      else { btn.style.background='red'; }
+      jogadorAtual.quiz = pontuacaoQuiz;
+      jogadorAtual.total = jogadorAtual.quiz + jogadorAtual.memoria + jogadorAtual.corrida;
+      localStorage.setItem('jogadorAtual', JSON.stringify(jogadorAtual));
+      mostrarRanking();
+
+      setTimeout(()=>{
+        perguntaAtual++;
+        mostrarPergunta();
+      },500);
+    };
+    container.appendChild(btn);
+  });
+
+  document.getElementById('pontuacao').textContent = 'Pontuação: ' + pontuacaoQuiz;
 }
 
 // ===== MEMÓRIA =====
-const tipos = ['Plástico','Vidro','Papel','Metal','Orgânico','Lata'];
-let pontuacaoMemoria=0, primeira=null, segunda=null;
+const cartasValores = ["Papel","Vidro","Plástico","Bateria","celular","Papel","Vidro","Plástico","Bateria","celular"];
+let primeiraCarta = null, segundaCarta = null, pontuacaoMemoria = 0, travarMemoria=false;
 
 function iniciarMemoria(){
-  if(jogadorAtual.memoria){ alert("Você já jogou Memória!"); return; }
-  pontuacaoMemoria=0; primeira=null; segunda=null;
-  criarMemoria(); mostrar('memoria');
-}
+  mostrar('memoria');
+  pontuacaoMemoria = 0;
+  primeiraCarta = null;
+  segundaCarta = null;
+  travarMemoria = false;
 
-function criarMemoria(){
-  const cartasDiv = document.getElementById('cartas');
-  cartasDiv.innerHTML='';
-  let shuffled = tipos.concat(tipos).sort(()=>0.5-Math.random());
-  shuffled.forEach(t=>{
-    let div = document.createElement('div'); div.className='cart'; div.dataset.tipo=t; div.textContent='?';
-    div.onclick=()=>virarCarta(div); cartasDiv.appendChild(div);
+  const container = document.getElementById('cartas');
+  container.innerHTML = '';
+  let arr = [...cartasValores].sort(()=>0.5 - Math.random());
+
+  arr.forEach(v=>{
+    const div = document.createElement('div'); 
+    div.className = 'cart'; 
+    div.textContent = '?'; 
+    div.dataset.valor = v;
+    div.onclick = ()=>virarCarta(div);
+    container.appendChild(div);
   });
+
+  document.getElementById('pontuacao-memoria').textContent = 'Pontuação: 0';
 }
 
-function virarCarta(carta){
-  if(primeira && segunda) return;
-  carta.textContent=carta.dataset.tipo;
-  if(!primeira){ primeira=carta; return; }
-  segunda = carta;
-  if(primeira.dataset.tipo===segunda.dataset.tipo){ pontuacaoMemoria++; primeira=null; segunda=null; }
-  else{ setTimeout(()=>{ primeira.textContent='?'; segunda.textContent='?'; primeira=null; segunda=null; },1000); }
-  document.getElementById('pontuacao-memoria').textContent='Pontuação: '+pontuacaoMemoria;
-  if(pontuacaoMemoria === tipos.length){ jogadorAtual.total += pontuacaoMemoria; jogadorAtual.memoria=true; localStorage.setItem('jogadorAtual', JSON.stringify(jogadorAtual)); finalizarJogo(); }
+function virarCarta(div){
+  if(travarMemoria || div.textContent !== '?' || div.classList.contains('correct')) return;
+
+  div.textContent = div.dataset.valor;
+
+  if(!primeiraCarta){ primeiraCarta = div; return; }
+  segundaCarta = div;
+  travarMemoria = true;
+
+  setTimeout(()=>{
+    if(primeiraCarta.dataset.valor === segundaCarta.dataset.valor){
+      primeiraCarta.classList.add('correct');
+      segundaCarta.classList.add('correct');
+      pontuacaoMemoria++;
+    } else {
+      primeiraCarta.classList.add('wrong');
+      segundaCarta.classList.add('wrong');
+      setTimeout(()=>{
+        primeiraCarta.textContent='?';
+        segundaCarta.textContent='?';
+        primeiraCarta.classList.remove('wrong');
+        segundaCarta.classList.remove('wrong');
+      },300);
+    }
+
+    document.getElementById('pontuacao-memoria').textContent = 'Pontuação: ' + pontuacaoMemoria;
+    jogadorAtual.memoria = pontuacaoMemoria;
+    jogadorAtual.total = jogadorAtual.quiz + jogadorAtual.memoria + jogadorAtual.corrida;
+    localStorage.setItem('jogadorAtual', JSON.stringify(jogadorAtual));
+    mostrarRanking();
+
+    primeiraCarta=null; segundaCarta=null; travarMemoria=false;
+  },300);
 }
 
-// ===== CORRIDA =====
-let pontuacaoCorrida=0, tempoCorrida=30, corridaInterval, tempoInterval;
-const residuos=[ {tipo:'Plástico', correto:true},{tipo:'Vidro', correto:true},{tipo:'Papel', correto:true},{tipo:'Lata', correto:false},{tipo:'Orgânico', correto:false},{tipo:'Metal', correto:false} ];
+// ===== CORRIDA DE PALAVRAS =====
+const palavras = [
+  {texto:"Papel", correta:true}, {texto:"Vidro", correta:true}, {texto:"Plástico", correta:true},
+  {texto:"Bateria", correta:true}, {texto:"Casca de Banana", correta:true},
+  {texto:"Lixo Comum", correta:false}, {texto:"Saco de Lixo", correta:false}, {texto:"Pedra", correta:false},
+  {texto:"Areia", correta:false}, {texto:"Metal", correta:false}
+];
+let palavrasCorrida = [];
+let pontuacaoCorrida = 0;
+let errosCorrida = 0;
+let tempoCorrida = 60;
+let intervaloPalavra, intervaloMovimento, intervaloTempo;
 
 function iniciarCorrida(){
-  if(jogadorAtual.corrida){ alert("Você já jogou Corrida!"); return; }
   mostrar('corrida');
-  pontuacaoCorrida=0; tempoCorrida=30;
-  const corridaDiv = document.getElementById('itens-corrida');
-  corridaDiv.innerHTML=''; document.getElementById('pontuacao-corrida').textContent='Pontuação: 0'; document.getElementById('tempo-corrida').textContent='Tempo restante: 30s';
-  clearInterval(corridaInterval); clearInterval(tempoInterval);
+  document.getElementById('itens-corrida').innerHTML='';
+  palavrasCorrida = []; pontuacaoCorrida=0; errosCorrida=0; tempoCorrida=60;
+  atualizarCorrida();
 
-  corridaInterval = setInterval(()=>criarItemCorrida(corridaDiv),1000);
-  tempoInterval = setInterval(()=>{
+  intervaloPalavra = setInterval(adicionarPalavra,1000);
+  intervaloMovimento = setInterval(moverPalavras,50);
+  intervaloTempo = setInterval(()=>{
     tempoCorrida--;
-    document.getElementById('tempo-corrida').textContent='Tempo restante: '+tempoCorrida+'s';
-    if(tempoCorrida<=0) finalizarCorrida();
+    document.getElementById('tempo-corrida').textContent = 'Tempo restante: '+tempoCorrida+'s';
+    if(tempoCorrida<=0){ clearInterval(intervaloPalavra); clearInterval(intervaloMovimento); clearInterval(intervaloTempo); alert("Corrida finalizada! Pontuação: "+pontuacaoCorrida); jogadorAtual.corrida=pontuacaoCorrida; jogadorAtual.total=jogadorAtual.quiz+jogadorAtual.memoria+jogadorAtual.corrida; localStorage.setItem('jogadorAtual', JSON.stringify(jogadorAtual)); mostrarRanking(); }
   },1000);
 }
 
-function criarItemCorrida(corridaDiv){
-  let itemData = residuos[Math.floor(Math.random()*residuos.length)];
-  let div = document.createElement('div'); div.textContent=itemData.tipo;
-  div.style.position='absolute'; div.style.left=Math.random()*400+'px'; div.style.top='0px'; div.style.width='100px'; div.style.height='40px'; div.style.lineHeight='40px';
-  div.style.background='#0077b6'; div.style.color='#fff'; div.style.fontWeight='bold'; div.style.borderRadius='5px'; div.style.cursor='pointer';
-  div.dataset.correto=itemData.correto; corridaDiv.appendChild(div);
+function adicionarPalavra(){
+  const idx = Math.floor(Math.random()*palavras.length);
+  const p = {...palavras[idx], top:0, left:Math.random()*400};
+  palavrasCorrida.push(p);
 
-  div.onclick=()=>{
-    if(itemData.correto) pontuacaoCorrida+=10;
-    document.getElementById('pontuacao-corrida').textContent='Pontuação: '+pontuacaoCorrida;
-    if(corridaDiv.contains(div)) corridaDiv.removeChild(div);
+  const div = document.createElement('div');
+  div.className='cart';
+  div.style.top=p.top+'px';
+  div.style.left=p.left+'px';
+  div.textContent=p.texto;
+  div.onclick = ()=>{ 
+    if(p.correta){ pontuacaoCorrida++; }
+    else { errosCorrida++; }
+    palavrasCorrida = palavrasCorrida.filter(x=>x!==p);
+    div.remove();
+    atualizarCorrida();
   };
-
-  let pos=0;
-  const anim = setInterval(()=>{
-    pos+=5; div.style.top=pos+'px';
-    if(pos>=200){ clearInterval(anim); if(corridaDiv.contains(div)) corridaDiv.removeChild(div); }
-  },50);
+  document.getElementById('itens-corrida').appendChild(div);
 }
 
-function finalizarCorrida(){
-  clearInterval(corridaInterval); clearInterval(tempoInterval);
-  jogadorAtual.total+=pontuacaoCorrida; jogadorAtual.corrida=true;
-  localStorage.setItem('jogadorAtual', JSON.stringify(jogadorAtual));
-  finalizarJogo();
+function moverPalavras(){
+  const container = document.getElementById('itens-corrida');
+  Array.from(container.children).forEach((div,i)=>{
+    let p = palavrasCorrida[i];
+    p.top +=2;
+    if(p.top>300){ div.remove(); palavrasCorrida.splice(i,1); errosCorrida++; }
+    else div.style.top=p.top+'px';
+  });
+  atualizarCorrida();
+}
+
+function atualizarCorrida(){
+  document.getElementById('pontuacao-corrida').textContent='Pontuação: '+pontuacaoCorrida;
+  document.getElementById('erros-corrida').textContent='Erros: '+errosCorrida;
 }
 </script>
 
